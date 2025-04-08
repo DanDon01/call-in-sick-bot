@@ -1,0 +1,1893 @@
+ENDPOINTS
+Voices
+List voices
+
+GET
+
+https://api.elevenlabs.io
+/v2/voices
+GET
+/v2/voices
+
+cURL
+
+curl -G https://api.elevenlabs.io/v2/voices \
+     -H "xi-api-key: <apiKey>" \
+     -d include_total_count=true
+Try it
+200
+Retrieved
+
+{
+  "voices": [
+    {
+      "voice_id": "21m00Tcm4TlvDq8ikWAM",
+      "name": "Rachel",
+      "category": "professional",
+      "labels": {
+        "accent": "American",
+        "age": "middle-aged",
+        "description": "expressive",
+        "gender": "female",
+        "use_case": "social media"
+      },
+      "available_for_tiers": [
+        "creator",
+        "enterprise"
+      ],
+      "high_quality_base_model_ids": [
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2"
+      ],
+      "samples": [
+        {
+          "sample_id": "DCwhRBWXzGAHq8TQ4Fs18",
+          "file_name": "sample.mp3",
+          "mime_type": "audio/mpeg",
+          "size_bytes": 1000000,
+          "hash": "1234567890"
+        }
+      ],
+      "fine_tuning": {
+        "is_allowed_to_fine_tune": true,
+        "state": {
+          "eleven_multilingual_v2": "fine_tuned"
+        },
+        "verification_failures": [
+          "verification_failures"
+        ],
+        "verification_attempts_count": 2,
+        "manual_verification_requested": false
+      },
+      "description": "A warm, expressive voice with a touch of humor.",
+      "preview_url": "https://storage.googleapis.com/eleven-public-prod/premade/voices/9BWtsMINqrJLrRacOk9x/405766b8-1f4e-4d3c-aba1-6f25333823ec.mp3",
+      "settings": {
+        "stability": 1,
+        "similarity_boost": 1,
+        "style": 0,
+        "use_speaker_boost": true,
+        "speed": 1
+      },
+      "sharing": {
+        "status": "enabled",
+        "date_unix": 1714204800,
+        "whitelisted_emails": [
+          "example@example.com"
+        ],
+        "public_owner_id": "DCwhRBWXzGAHq8TQ4Fs18",
+        "original_voice_id": "DCwhRBWXzGAHq8TQ4Fs18",
+        "financial_rewards_enabled": true,
+        "free_users_allowed": true,
+        "live_moderation_enabled": true,
+        "notice_period": 30,
+        "voice_mixing_allowed": false,
+        "featured": true,
+        "category": "professional",
+        "liked_by_count": 100,
+        "cloned_by_count": 50,
+        "name": "Rachel",
+        "labels": {
+          "accent": "American",
+          "gender": "female"
+        },
+        "review_status": "allowed",
+        "enabled_in_library": true,
+        "history_item_sample_id": "DCwhRBWXzGAHq8TQ4Fs18",
+        "rate": 0.05,
+        "disable_at_unix": 1714204800,
+        "reader_app_enabled": true,
+        "description": "A female voice with a soft and friendly tone.",
+        "moderation_check": {
+          "date_checked_unix": 1714204800,
+          "name_value": "Rachel",
+          "name_check": true,
+          "description_value": "A female voice with a soft and friendly tone.",
+          "description_check": true,
+          "sample_ids": [
+            "sample1",
+            "sample2"
+          ],
+          "sample_checks": [
+            0.95,
+            0.98
+          ],
+          "captcha_ids": [
+            "captcha1",
+            "captcha2"
+          ],
+          "captcha_checks": [
+            0.95,
+            0.98
+          ]
+        },
+        "reader_restricted_on": [
+          {
+            "resource_type": "read",
+            "resource_id": "FCwhRBWXzGAHq8TQ4Fs18"
+          }
+        ]
+      },
+      "verified_languages": [
+        {
+          "language": "en",
+          "model_id": "eleven_turbo_v2_5",
+          "accent": "American"
+        }
+      ],
+      "safety_control": "NONE",
+      "voice_verification": {
+        "requires_verification": false,
+        "is_verified": true,
+        "verification_failures": [
+          "verification_failures"
+        ],
+        "verification_attempts_count": 0,
+        "language": "en",
+        "verification_attempts": [
+          {
+            "text": "Hello, how are you?",
+            "date_unix": 1714204800,
+            "accepted": true,
+            "similarity": 0.95,
+            "levenshtein_distance": 2,
+            "recording": {
+              "recording_id": "CwhRBWXzGAHq8TQ4Fs17",
+              "mime_type": "audio/mpeg",
+              "size_bytes": 1000000,
+              "upload_date_unix": 1714204800,
+              "transcription": "Hello, how are you?"
+            }
+          }
+        ]
+      },
+      "permission_on_resource": "permission_on_resource",
+      "is_owner": false,
+      "is_legacy": false,
+      "is_mixed": false,
+      "created_at_unix": 1
+    }
+  ],
+  "has_more": true,
+  "total_count": 1,
+  "next_page_token": "next_page_token"
+}
+Gets a list of all available voices for a user with search, filtering and pagination.
+
+Headers
+xi-api-key
+string
+Required
+Query parameters
+next_page_token
+string
+Optional
+The next page token to use for pagination. Returned from the previous request.
+
+page_size
+integer
+Optional
+Defaults to 10
+How many voices to return at maximum. Can not exceed 100, defaults to 10. Page 0 may include more voices due to default voices being included.
+
+search
+string
+Optional
+Search term to filter voices by. Searches in name, description, labels, category.
+
+sort
+string
+Optional
+Which field to sort by, one of ‘created_at_unix’ or ‘name’. ‘created_at_unix’ may not be available for older voices.
+
+sort_direction
+string
+Optional
+Which direction to sort the voices in. ‘asc’ or ‘desc’.
+
+voice_type
+string
+Optional
+Type of the voice to filter by. One of ‘personal’, ‘community’, ‘default’, ‘workspace’.
+
+category
+string
+Optional
+Category of the voice to filter by. One of ‘premade’, ‘cloned’, ‘generated’, ‘professional’
+
+fine_tuning_state
+string
+Optional
+State of the voice’s fine tuning to filter by. Applicable only to professional voices clones. One of ‘draft’, ‘not_verified’, ‘not_started’, ‘queued’, ‘fine_tuning’, ‘fine_tuned’, ‘failed’, ‘delayed’
+
+collection_id
+string
+Optional
+Collection ID to filter voices by.
+
+include_total_count
+boolean
+Optional
+Defaults to true
+Whether to include the total count of voices found in the response. Incurs a performance cost.
+
+Response
+Successful Response
+
+voices
+list of objects
+
+Hide 20 properties
+voice_id
+string
+The ID of the voice.
+
+name
+string
+The name of the voice.
+
+category
+enum
+The category of the voice.
+
+
+Search...
+
+generated
+cloned
+premade
+professional
+famous
+high_quality
+labels
+map from strings to strings
+Labels associated with the voice.
+
+available_for_tiers
+list of strings
+The tiers the voice is available for.
+
+high_quality_base_model_ids
+list of strings
+The base model IDs for high-quality voices.
+
+samples
+list of objects
+Optional
+List of samples associated with the voice.
+
+
+Hide 10 properties
+sample_id
+string
+The ID of the sample.
+
+file_name
+string
+The name of the sample file.
+
+mime_type
+string
+The MIME type of the sample file.
+
+size_bytes
+integer
+The size of the sample file in bytes.
+
+hash
+string
+The hash of the sample file.
+
+duration_secs
+double
+Optional
+remove_background_noise
+boolean
+Optional
+has_isolated_audio
+boolean
+Optional
+has_isolated_audio_preview
+boolean
+Optional
+speaker_separation
+object
+Optional
+
+Hide 5 properties
+voice_id
+string
+sample_id
+string
+status
+enum
+Allowed values:
+not_started
+pending
+completed
+failed
+speakers
+map from strings to optional objects
+Optional
+
+Show 3 properties
+selected_speaker_ids
+list of strings
+Optional
+fine_tuning
+object
+Optional
+Fine-tuning information for the voice.
+
+
+Hide 14 properties
+is_allowed_to_fine_tune
+boolean
+Whether the user is allowed to fine-tune the voice.
+
+state
+map from strings to enums
+The state of the fine-tuning process for each model.
+
+
+Show 6 enum values
+verification_failures
+list of strings
+List of verification failures in the fine-tuning process.
+
+verification_attempts_count
+integer
+The number of verification attempts in the fine-tuning process.
+
+manual_verification_requested
+boolean
+Whether a manual verification was requested for the fine-tuning process.
+
+language
+string
+Optional
+The language of the fine-tuning process.
+
+progress
+map from strings to optional doubles
+Optional
+The progress of the fine-tuning process.
+
+message
+map from strings to optional strings
+Optional
+The message of the fine-tuning process.
+
+dataset_duration_seconds
+double
+Optional
+The duration of the dataset in seconds.
+
+verification_attempts
+list of objects
+Optional
+The number of verification attempts.
+
+
+Hide 6 properties
+text
+string
+The text of the verification attempt.
+
+date_unix
+integer
+The date of the verification attempt in Unix time.
+
+accepted
+boolean
+Whether the verification attempt was accepted.
+
+similarity
+double
+The similarity of the verification attempt.
+
+levenshtein_distance
+double
+The Levenshtein distance of the verification attempt.
+
+recording
+object
+Optional
+The recording of the verification attempt.
+
+
+Hide 5 properties
+recording_id
+string
+The ID of the recording.
+
+mime_type
+string
+The MIME type of the recording.
+
+size_bytes
+integer
+The size of the recording in bytes.
+
+upload_date_unix
+integer
+The date of the recording in Unix time.
+
+transcription
+string
+The transcription of the recording.
+
+slice_ids
+list of strings
+Optional
+List of slice IDs.
+
+manual_verification
+object
+Optional
+The manual verification of the fine-tuning process.
+
+
+Hide 3 properties
+extra_text
+string
+The extra text of the manual verification.
+
+request_time_unix
+integer
+The date of the manual verification in Unix time.
+
+files
+list of objects
+The files of the manual verification.
+
+
+Hide 5 properties
+file_id
+string
+The ID of the file.
+
+file_name
+string
+The name of the file.
+
+mime_type
+string
+The MIME type of the file.
+
+size_bytes
+integer
+The size of the file in bytes.
+
+upload_date_unix
+integer
+The date of the file in Unix time.
+
+max_verification_attempts
+integer
+Optional
+The maximum number of verification attempts.
+
+next_max_verification_attempts_reset_unix_ms
+integer
+Optional
+The next maximum verification attempts reset time in Unix milliseconds.
+
+description
+string
+Optional
+The description of the voice.
+
+preview_url
+string
+Optional
+The preview URL of the voice.
+
+settings
+object
+Optional
+The settings of the voice.
+
+
+Hide 5 properties
+stability
+double
+Optional
+Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+
+similarity_boost
+double
+Optional
+Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+
+style
+double
+Optional
+Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+
+use_speaker_boost
+boolean
+Optional
+This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+
+speed
+double
+Optional
+Controls the speed of the generated speech. Values range from 0.7 to 1.2, with 1.0 being the default speed. Lower values create slower, more deliberate speech while higher values produce faster-paced speech. Extreme values can impact the quality of the generated speech.
+
+sharing
+object
+Optional
+The sharing information of the voice.
+
+
+Hide 32 properties
+status
+enum
+The status of the voice sharing.
+
+Allowed values:
+enabled
+disabled
+copied
+copied_disabled
+date_unix
+integer
+The date of the voice sharing in Unix time.
+
+whitelisted_emails
+list of strings
+A list of whitelisted emails.
+
+public_owner_id
+string
+The ID of the public owner.
+
+original_voice_id
+string
+The ID of the original voice.
+
+financial_rewards_enabled
+boolean
+Whether financial rewards are enabled.
+
+free_users_allowed
+boolean
+Whether free users are allowed.
+
+live_moderation_enabled
+boolean
+Whether live moderation is enabled.
+
+notice_period
+integer
+The notice period of the voice sharing.
+
+voice_mixing_allowed
+boolean
+Whether voice mixing is allowed.
+
+featured
+boolean
+Whether the voice is featured.
+
+category
+enum
+The category of the voice.
+
+
+Search...
+
+generated
+cloned
+premade
+professional
+famous
+high_quality
+liked_by_count
+integer
+The number of likes on the voice.
+
+cloned_by_count
+integer
+The number of clones on the voice.
+
+name
+string
+The name of the voice.
+
+labels
+map from strings to strings
+The labels of the voice.
+
+review_status
+enum
+The review status of the voice.
+
+Allowed values:
+not_requested
+pending
+declined
+allowed
+allowed_with_changes
+enabled_in_library
+boolean
+Whether the voice is enabled in the library.
+
+history_item_sample_id
+string
+Optional
+The sample ID of the history item.
+
+rate
+double
+Optional
+The rate of the voice sharing.
+
+disable_at_unix
+integer
+Optional
+The date of the voice sharing in Unix time.
+
+reader_app_enabled
+boolean
+Optional
+Whether the reader app is enabled.
+
+image_url
+string
+Optional
+The image URL of the voice.
+
+ban_reason
+string
+Optional
+The ban reason of the voice.
+
+description
+string
+Optional
+The description of the voice.
+
+review_message
+string
+Optional
+The review message of the voice.
+
+instagram_username
+string
+Optional
+The Instagram username of the voice.
+
+twitter_username
+string
+Optional
+The Twitter/X username of the voice.
+
+youtube_username
+string
+Optional
+The YouTube username of the voice.
+
+tiktok_username
+string
+Optional
+The TikTok username of the voice.
+
+moderation_check
+object
+Optional
+The moderation check of the voice.
+
+
+Hide 9 properties
+date_checked_unix
+integer
+Optional
+The date the moderation check was made in Unix time.
+
+name_value
+string
+Optional
+The name value of the voice.
+
+name_check
+boolean
+Optional
+Whether the name check was successful.
+
+description_value
+string
+Optional
+The description value of the voice.
+
+description_check
+boolean
+Optional
+Whether the description check was successful.
+
+sample_ids
+list of strings
+Optional
+A list of sample IDs.
+
+sample_checks
+list of doubles
+Optional
+A list of sample checks.
+
+captcha_ids
+list of strings
+Optional
+A list of captcha IDs.
+
+captcha_checks
+list of doubles
+Optional
+A list of CAPTCHA check values.
+
+reader_restricted_on
+list of objects
+Optional
+The reader restricted on of the voice.
+
+
+Hide 2 properties
+resource_type
+enum
+The type of resource.
+
+Allowed values:
+read
+collection
+resource_id
+string
+The ID of the resource.
+
+verified_languages
+list of objects
+Optional
+The verified languages of the voice.
+
+
+Hide 5 properties
+language
+string
+The language of the voice.
+
+model_id
+string
+The voice’s model ID.
+
+accent
+string
+Optional
+The voice’s accent, if applicable.
+
+locale
+string
+Optional
+The voice’s locale, if applicable.
+
+preview_url
+string
+Optional
+The voice’s preview URL, if applicable.
+
+safety_control
+enum
+Optional
+The safety controls of the voice.
+
+
+Search...
+
+NONE
+BAN
+CAPTCHA
+CAPTCHA_AND_MODERATION
+ENTERPRISE_BAN
+ENTERPRISE_CAPTCHA
+voice_verification
+object
+Optional
+The voice verification of the voice.
+
+
+Hide 6 properties
+requires_verification
+boolean
+Whether the voice requires verification.
+
+is_verified
+boolean
+Whether the voice has been verified.
+
+verification_failures
+list of strings
+List of verification failures.
+
+verification_attempts_count
+integer
+The number of verification attempts.
+
+language
+string
+Optional
+The language of the voice.
+
+verification_attempts
+list of objects
+Optional
+Number of times a verification was attempted.
+
+
+Hide 6 properties
+text
+string
+The text of the verification attempt.
+
+date_unix
+integer
+The date of the verification attempt in Unix time.
+
+accepted
+boolean
+Whether the verification attempt was accepted.
+
+similarity
+double
+The similarity of the verification attempt.
+
+levenshtein_distance
+double
+The Levenshtein distance of the verification attempt.
+
+recording
+object
+Optional
+The recording of the verification attempt.
+
+
+Hide 5 properties
+recording_id
+string
+The ID of the recording.
+
+mime_type
+string
+The MIME type of the recording.
+
+size_bytes
+integer
+The size of the recording in bytes.
+
+upload_date_unix
+integer
+The date of the recording in Unix time.
+
+transcription
+string
+The transcription of the recording.
+
+permission_on_resource
+string
+Optional
+The permission on the resource of the voice.
+
+is_owner
+boolean
+Optional
+Whether the voice is owned by the user.
+
+is_legacy
+boolean
+Optional
+Defaults to false
+Whether the voice is legacy.
+
+is_mixed
+boolean
+Optional
+Defaults to false
+Whether the voice is mixed.
+
+created_at_unix
+integer
+Optional
+The creation time of the voice in Unix time.
+
+has_more
+boolean
+total_count
+integer
+next_page_token
+string
+Optional
+Errors
+
+422
+Voices Search Request Unprocessable Entity Error
+
+
+ENDPOINTS
+Voices
+Get default voice settings
+
+GET
+
+https://api.elevenlabs.io
+/v1/voices/settings/default
+GET
+/v1/voices/settings/default
+
+cURL
+
+curl https://api.elevenlabs.io/v1/voices/settings/default \
+     -H "xi-api-key: <apiKey>"
+Try it
+200
+Retrieved
+
+{
+  "stability": 1,
+  "similarity_boost": 1,
+  "style": 0,
+  "use_speaker_boost": true,
+  "speed": 1
+}
+Gets the default settings for voices. “similarity_boost” corresponds to”Clarity + Similarity Enhancement” in the web app and “stability” corresponds to “Stability” slider in the web app.
+
+Headers
+xi-api-key
+string
+Required
+Response
+Successful Response
+
+stability
+double
+Optional
+Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+
+similarity_boost
+double
+Optional
+Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+
+style
+double
+Optional
+Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+
+use_speaker_boost
+boolean
+Optional
+This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+
+speed
+double
+Optional
+Controls the speed of the generated speech. Values range from 0.7 to 1.2, with 1.0 being the default speed. Lower values create slower, more deliberate speech while higher values produce faster-paced speech. Extreme values can impact the quality of the generated speech.
+
+
+ENDPOINTS
+Voices
+Get voice
+
+GET
+
+https://api.elevenlabs.io
+/v1/voices/:voice_id
+GET
+/v1/voices/:voice_id
+
+cURL
+
+curl https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM \
+     -H "xi-api-key: <apiKey>"
+Try it
+200
+Retrieved
+
+{
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "name": "Rachel",
+  "category": "professional",
+  "labels": {
+    "accent": "American",
+    "age": "middle-aged",
+    "description": "expressive",
+    "gender": "female",
+    "use_case": "social media"
+  },
+  "available_for_tiers": [
+    "creator",
+    "enterprise"
+  ],
+  "high_quality_base_model_ids": [
+    "eleven_v2_flash",
+    "eleven_flash_v2",
+    "eleven_turbo_v2_5",
+    "eleven_multilingual_v2",
+    "eleven_v2_5_flash",
+    "eleven_flash_v2_5",
+    "eleven_turbo_v2"
+  ],
+  "samples": [
+    {
+      "sample_id": "DCwhRBWXzGAHq8TQ4Fs18",
+      "file_name": "sample.mp3",
+      "mime_type": "audio/mpeg",
+      "size_bytes": 1000000,
+      "hash": "1234567890",
+      "duration_secs": 1.1,
+      "remove_background_noise": true,
+      "has_isolated_audio": true,
+      "has_isolated_audio_preview": true,
+      "speaker_separation": {
+        "voice_id": "voice_id",
+        "sample_id": "sample_id",
+        "status": "not_started"
+      }
+    }
+  ],
+  "fine_tuning": {
+    "is_allowed_to_fine_tune": true,
+    "state": {
+      "eleven_multilingual_v2": "fine_tuned"
+    },
+    "verification_failures": [
+      "verification_failures"
+    ],
+    "verification_attempts_count": 2,
+    "manual_verification_requested": false,
+    "language": "language",
+    "progress": {
+      "key": 1.1
+    },
+    "message": {
+      "key": "value"
+    },
+    "dataset_duration_seconds": 1.1,
+    "verification_attempts": [
+      {
+        "text": "Hello, how are you?",
+        "date_unix": 1714204800,
+        "accepted": true,
+        "similarity": 0.95,
+        "levenshtein_distance": 2,
+        "recording": {
+          "recording_id": "CwhRBWXzGAHq8TQ4Fs17",
+          "mime_type": "audio/mpeg",
+          "size_bytes": 1000000,
+          "upload_date_unix": 1714204800,
+          "transcription": "Hello, how are you?"
+        }
+      }
+    ],
+    "slice_ids": [
+      "slice_ids"
+    ],
+    "manual_verification": {
+      "extra_text": "Please verify the voice is that of a female.",
+      "request_time_unix": 1714204800,
+      "files": [
+        {
+          "file_id": "CwhRBWXzGAHq8TQ4Fs18",
+          "file_name": "file.mp3",
+          "mime_type": "audio/mpeg",
+          "size_bytes": 1000000,
+          "upload_date_unix": 1714204800
+        }
+      ]
+    },
+    "max_verification_attempts": 1,
+    "next_max_verification_attempts_reset_unix_ms": 1
+  },
+  "description": "A warm, expressive voice with a touch of humor.",
+  "preview_url": "https://storage.googleapis.com/eleven-public-prod/premade/voices/9BWtsMINqrJLrRacOk9x/405766b8-1f4e-4d3c-aba1-6f25333823ec.mp3",
+  "settings": {
+    "stability": 1,
+    "similarity_boost": 1,
+    "style": 0,
+    "use_speaker_boost": true,
+    "speed": 1
+  },
+  "sharing": {
+    "status": "enabled",
+    "date_unix": 1714204800,
+    "whitelisted_emails": [
+      "example@example.com"
+    ],
+    "public_owner_id": "DCwhRBWXzGAHq8TQ4Fs18",
+    "original_voice_id": "DCwhRBWXzGAHq8TQ4Fs18",
+    "financial_rewards_enabled": true,
+    "free_users_allowed": true,
+    "live_moderation_enabled": true,
+    "notice_period": 30,
+    "voice_mixing_allowed": false,
+    "featured": true,
+    "category": "professional",
+    "liked_by_count": 100,
+    "cloned_by_count": 50,
+    "name": "Rachel",
+    "labels": {
+      "accent": "American",
+      "gender": "female"
+    },
+    "review_status": "allowed",
+    "enabled_in_library": true,
+    "history_item_sample_id": "DCwhRBWXzGAHq8TQ4Fs18",
+    "rate": 0.05,
+    "disable_at_unix": 1714204800,
+    "reader_app_enabled": true,
+    "image_url": "image_url",
+    "ban_reason": "ban_reason",
+    "description": "A female voice with a soft and friendly tone.",
+    "review_message": "review_message",
+    "instagram_username": "instagram_username",
+    "twitter_username": "twitter_username",
+    "youtube_username": "youtube_username",
+    "tiktok_username": "tiktok_username",
+    "moderation_check": {
+      "date_checked_unix": 1714204800,
+      "name_value": "Rachel",
+      "name_check": true,
+      "description_value": "A female voice with a soft and friendly tone.",
+      "description_check": true,
+      "sample_ids": [
+        "sample1",
+        "sample2"
+      ],
+      "sample_checks": [
+        0.95,
+        0.98
+      ],
+      "captcha_ids": [
+        "captcha1",
+        "captcha2"
+      ],
+      "captcha_checks": [
+        0.95,
+        0.98
+      ]
+    },
+    "reader_restricted_on": [
+      {
+        "resource_type": "read",
+        "resource_id": "FCwhRBWXzGAHq8TQ4Fs18"
+      }
+    ]
+  },
+  "verified_languages": [
+    {
+      "language": "en",
+      "model_id": "eleven_turbo_v2_5",
+      "accent": "American",
+      "locale": "locale",
+      "preview_url": "preview_url"
+    }
+  ],
+  "safety_control": "NONE",
+  "voice_verification": {
+    "requires_verification": false,
+    "is_verified": true,
+    "verification_failures": [
+      "verification_failures"
+    ],
+    "verification_attempts_count": 0,
+    "language": "en",
+    "verification_attempts": [
+      {
+        "text": "Hello, how are you?",
+        "date_unix": 1714204800,
+        "accepted": true,
+        "similarity": 0.95,
+        "levenshtein_distance": 2,
+        "recording": {
+          "recording_id": "CwhRBWXzGAHq8TQ4Fs17",
+          "mime_type": "audio/mpeg",
+          "size_bytes": 1000000,
+          "upload_date_unix": 1714204800,
+          "transcription": "Hello, how are you?"
+        }
+      }
+    ]
+  },
+  "permission_on_resource": "permission_on_resource",
+  "is_owner": false,
+  "is_legacy": false,
+  "is_mixed": false,
+  "created_at_unix": 1
+}
+Returns metadata about a specific voice.
+
+Path parameters
+voice_id
+string
+Required
+ID of the voice to be used. You can use the Get voices endpoint list all the available voices.
+
+Headers
+xi-api-key
+string
+Required
+Query parameters
+with_settings
+boolean
+Optional
+Defaults to true
+Deprecated
+This parameter is now deprecated. It is ignored and will be removed in a future version.
+
+Response
+Successful Response
+
+voice_id
+string
+The ID of the voice.
+
+name
+string
+The name of the voice.
+
+category
+enum
+The category of the voice.
+
+
+Search...
+
+generated
+cloned
+premade
+professional
+famous
+high_quality
+labels
+map from strings to strings
+Labels associated with the voice.
+
+available_for_tiers
+list of strings
+The tiers the voice is available for.
+
+high_quality_base_model_ids
+list of strings
+The base model IDs for high-quality voices.
+
+samples
+list of objects
+Optional
+List of samples associated with the voice.
+
+
+Hide 10 properties
+sample_id
+string
+The ID of the sample.
+
+file_name
+string
+The name of the sample file.
+
+mime_type
+string
+The MIME type of the sample file.
+
+size_bytes
+integer
+The size of the sample file in bytes.
+
+hash
+string
+The hash of the sample file.
+
+duration_secs
+double
+Optional
+remove_background_noise
+boolean
+Optional
+has_isolated_audio
+boolean
+Optional
+has_isolated_audio_preview
+boolean
+Optional
+speaker_separation
+object
+Optional
+
+Hide 5 properties
+voice_id
+string
+sample_id
+string
+status
+enum
+Allowed values:
+not_started
+pending
+completed
+failed
+speakers
+map from strings to optional objects
+Optional
+
+Show 3 properties
+selected_speaker_ids
+list of strings
+Optional
+fine_tuning
+object
+Optional
+Fine-tuning information for the voice.
+
+
+Hide 14 properties
+is_allowed_to_fine_tune
+boolean
+Whether the user is allowed to fine-tune the voice.
+
+state
+map from strings to enums
+The state of the fine-tuning process for each model.
+
+
+Search...
+
+not_started
+queued
+fine_tuning
+fine_tuned
+failed
+delayed
+verification_failures
+list of strings
+List of verification failures in the fine-tuning process.
+
+verification_attempts_count
+integer
+The number of verification attempts in the fine-tuning process.
+
+manual_verification_requested
+boolean
+Whether a manual verification was requested for the fine-tuning process.
+
+language
+string
+Optional
+The language of the fine-tuning process.
+
+progress
+map from strings to optional doubles
+Optional
+The progress of the fine-tuning process.
+
+message
+map from strings to optional strings
+Optional
+The message of the fine-tuning process.
+
+dataset_duration_seconds
+double
+Optional
+The duration of the dataset in seconds.
+
+verification_attempts
+list of objects
+Optional
+The number of verification attempts.
+
+
+Hide 6 properties
+text
+string
+The text of the verification attempt.
+
+date_unix
+integer
+The date of the verification attempt in Unix time.
+
+accepted
+boolean
+Whether the verification attempt was accepted.
+
+similarity
+double
+The similarity of the verification attempt.
+
+levenshtein_distance
+double
+The Levenshtein distance of the verification attempt.
+
+recording
+object
+Optional
+The recording of the verification attempt.
+
+
+Hide 5 properties
+recording_id
+string
+The ID of the recording.
+
+mime_type
+string
+The MIME type of the recording.
+
+size_bytes
+integer
+The size of the recording in bytes.
+
+upload_date_unix
+integer
+The date of the recording in Unix time.
+
+transcription
+string
+The transcription of the recording.
+
+slice_ids
+list of strings
+Optional
+List of slice IDs.
+
+manual_verification
+object
+Optional
+The manual verification of the fine-tuning process.
+
+
+Hide 3 properties
+extra_text
+string
+The extra text of the manual verification.
+
+request_time_unix
+integer
+The date of the manual verification in Unix time.
+
+files
+list of objects
+The files of the manual verification.
+
+
+Hide 5 properties
+file_id
+string
+The ID of the file.
+
+file_name
+string
+The name of the file.
+
+mime_type
+string
+The MIME type of the file.
+
+size_bytes
+integer
+The size of the file in bytes.
+
+upload_date_unix
+integer
+The date of the file in Unix time.
+
+max_verification_attempts
+integer
+Optional
+The maximum number of verification attempts.
+
+next_max_verification_attempts_reset_unix_ms
+integer
+Optional
+The next maximum verification attempts reset time in Unix milliseconds.
+
+description
+string
+Optional
+The description of the voice.
+
+preview_url
+string
+Optional
+The preview URL of the voice.
+
+settings
+object
+Optional
+The settings of the voice.
+
+
+Hide 5 properties
+stability
+double
+Optional
+Determines how stable the voice is and the randomness between each generation. Lower values introduce broader emotional range for the voice. Higher values can result in a monotonous voice with limited emotion.
+
+similarity_boost
+double
+Optional
+Determines how closely the AI should adhere to the original voice when attempting to replicate it.
+
+style
+double
+Optional
+Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
+
+use_speaker_boost
+boolean
+Optional
+This setting boosts the similarity to the original speaker. Using this setting requires a slightly higher computational load, which in turn increases latency.
+
+speed
+double
+Optional
+Controls the speed of the generated speech. Values range from 0.7 to 1.2, with 1.0 being the default speed. Lower values create slower, more deliberate speech while higher values produce faster-paced speech. Extreme values can impact the quality of the generated speech.
+
+sharing
+object
+Optional
+The sharing information of the voice.
+
+
+Hide 32 properties
+status
+enum
+The status of the voice sharing.
+
+Allowed values:
+enabled
+disabled
+copied
+copied_disabled
+date_unix
+integer
+The date of the voice sharing in Unix time.
+
+whitelisted_emails
+list of strings
+A list of whitelisted emails.
+
+public_owner_id
+string
+The ID of the public owner.
+
+original_voice_id
+string
+The ID of the original voice.
+
+financial_rewards_enabled
+boolean
+Whether financial rewards are enabled.
+
+free_users_allowed
+boolean
+Whether free users are allowed.
+
+live_moderation_enabled
+boolean
+Whether live moderation is enabled.
+
+notice_period
+integer
+The notice period of the voice sharing.
+
+voice_mixing_allowed
+boolean
+Whether voice mixing is allowed.
+
+featured
+boolean
+Whether the voice is featured.
+
+category
+enum
+The category of the voice.
+
+
+Search...
+
+generated
+cloned
+premade
+professional
+famous
+high_quality
+liked_by_count
+integer
+The number of likes on the voice.
+
+cloned_by_count
+integer
+The number of clones on the voice.
+
+name
+string
+The name of the voice.
+
+labels
+map from strings to strings
+The labels of the voice.
+
+review_status
+enum
+The review status of the voice.
+
+Allowed values:
+not_requested
+pending
+declined
+allowed
+allowed_with_changes
+enabled_in_library
+boolean
+Whether the voice is enabled in the library.
+
+history_item_sample_id
+string
+Optional
+The sample ID of the history item.
+
+rate
+double
+Optional
+The rate of the voice sharing.
+
+disable_at_unix
+integer
+Optional
+The date of the voice sharing in Unix time.
+
+reader_app_enabled
+boolean
+Optional
+Whether the reader app is enabled.
+
+image_url
+string
+Optional
+The image URL of the voice.
+
+ban_reason
+string
+Optional
+The ban reason of the voice.
+
+description
+string
+Optional
+The description of the voice.
+
+review_message
+string
+Optional
+The review message of the voice.
+
+instagram_username
+string
+Optional
+The Instagram username of the voice.
+
+twitter_username
+string
+Optional
+The Twitter/X username of the voice.
+
+youtube_username
+string
+Optional
+The YouTube username of the voice.
+
+tiktok_username
+string
+Optional
+The TikTok username of the voice.
+
+moderation_check
+object
+Optional
+The moderation check of the voice.
+
+
+Hide 9 properties
+date_checked_unix
+integer
+Optional
+The date the moderation check was made in Unix time.
+
+name_value
+string
+Optional
+The name value of the voice.
+
+name_check
+boolean
+Optional
+Whether the name check was successful.
+
+description_value
+string
+Optional
+The description value of the voice.
+
+description_check
+boolean
+Optional
+Whether the description check was successful.
+
+sample_ids
+list of strings
+Optional
+A list of sample IDs.
+
+sample_checks
+list of doubles
+Optional
+A list of sample checks.
+
+captcha_ids
+list of strings
+Optional
+A list of captcha IDs.
+
+captcha_checks
+list of doubles
+Optional
+A list of CAPTCHA check values.
+
+reader_restricted_on
+list of objects
+Optional
+The reader restricted on of the voice.
+
+
+Hide 2 properties
+resource_type
+enum
+The type of resource.
+
+Allowed values:
+read
+collection
+resource_id
+string
+The ID of the resource.
+
+verified_languages
+list of objects
+Optional
+The verified languages of the voice.
+
+
+Hide 5 properties
+language
+string
+The language of the voice.
+
+model_id
+string
+The voice’s model ID.
+
+accent
+string
+Optional
+The voice’s accent, if applicable.
+
+locale
+string
+Optional
+The voice’s locale, if applicable.
+
+preview_url
+string
+Optional
+The voice’s preview URL, if applicable.
+
+safety_control
+enum
+Optional
+The safety controls of the voice.
+
+
+Search...
+
+NONE
+BAN
+CAPTCHA
+CAPTCHA_AND_MODERATION
+ENTERPRISE_BAN
+ENTERPRISE_CAPTCHA
+voice_verification
+object
+Optional
+The voice verification of the voice.
+
+
+Hide 6 properties
+requires_verification
+boolean
+Whether the voice requires verification.
+
+is_verified
+boolean
+Whether the voice has been verified.
+
+verification_failures
+list of strings
+List of verification failures.
+
+verification_attempts_count
+integer
+The number of verification attempts.
+
+language
+string
+Optional
+The language of the voice.
+
+verification_attempts
+list of objects
+Optional
+Number of times a verification was attempted.
+
+
+Show 6 properties
+permission_on_resource
+string
+Optional
+The permission on the resource of the voice.
+
+is_owner
+boolean
+Optional
+Whether the voice is owned by the user.
+
+is_legacy
+boolean
+Optional
+Defaults to false
+Whether the voice is legacy.
+
+is_mixed
+boolean
+Optional
+Defaults to false
+Whether the voice is mixed.
+
+created_at_unix
+integer
+Optional
+The creation time of the voice in Unix time.
+
+Errors
+
+422
+Voices Get Request Unprocessable Entity Error

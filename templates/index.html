@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call in Sick Bot</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #ff5252;
+            --primary-hover: #ff3232;
+            --secondary-color: #4285F4;
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --bg-input: #2d2d2d;
+            --text-light: #e0e0e0;
+            --text-dim: #aaaaaa;
+            --border-color: #444;
+        }
+        
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        /* Fun background animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            filter: blur(40px);
+            opacity: 0.15;
+            animation: float 15s infinite alternate ease-in-out;
+        }
+        
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -150px;
+            animation-duration: 25s;
+        }
+        
+        .circle-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -200px;
+            right: -200px;
+            animation-duration: 18s;
+            animation-delay: 2s;
+        }
+        
+        .circle-3 {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            right: -100px;
+            animation-duration: 12s;
+            animation-delay: 1s;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(50px, 30px) rotate(180deg); }
+            100% { transform: translate(-20px, -40px) rotate(360deg); }
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 4.5rem;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(255, 82, 82, 0.4);
+            animation: pulse 2s infinite alternate;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ff5252 0%, #ff7b7b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 2px 8px rgba(255, 82, 82, 0.3); }
+            100% { text-shadow: 0 2px 12px rgba(255, 82, 82, 0.7); }
+        }
+        
+        .tagline {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--text-dim);
+            font-size: 1rem;
+            line-height: 1.5;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+        }
+        
+        .description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            justify-content: center;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+            background-color: #333333;
+            color: var(--text-dim);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .tab:hover::before {
+            width: 70%;
+        }
+        
+        .tab.active {
+            border-color: var(--border-color);
+            background-color: var(--bg-card);
+            margin-bottom: -1px;
+            border-bottom: 1px solid var(--bg-card);
+            color: white;
+        }
+        
+        .tab.active::before {
+            width: 80%;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 25px 0;
+            animation: fadeIn 0.5s ease-out;
+            text-align: center;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        textarea {
+            width: 90%;
+            min-height: 120px;
+            margin: 10px auto;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 16px;
+            background-color: var(--bg-input);
+            color: var(--text-light);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) inset;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+            display: inline-block;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 82, 82, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(255, 82, 82, 0.3);
+        }
+        
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .record-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        .record-button span {
+            margin-left: 10px;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: none;
+            background-color: #252525;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        
+        .loading {
+            display: none;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .record-status {
+            margin-top: 15px;
+            font-style: italic;
+            color: #aaa;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .recording-indicator {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin-right: 8px;
+            position: relative;
+        }
+        
+        .recording-indicator::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            animation: pulse-recording 1.5s infinite;
+        }
+        
+        @keyframes pulse-recording {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        
+        .debug-console {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #111;
+            color: #33ff33;
+            font-family: monospace;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .debug-console.active {
+            display: block;
+        }
+        
+        .debug-toggle {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .api-notice {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .api-warning {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #ffb700;
+            border-color: #554400;
+        }
+        
+        .api-error {
+            background-color: rgba(220, 53, 69, 0.15);
+            color: #ff5252;
+            border-color: #551111;
+        }
+        
+        .api-info {
+            background-color: rgba(0, 119, 181, 0.15);
+            color: #0099ff;
+            border-color: #003355;
+        }
+        
+        .voice-id-setup {
+            display: none;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        /* Custom checkbox */
+        .checkbox-container input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background-color: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .checkbox-container input[type="checkbox"]:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .checkbox-container input[type="checkbox"]:checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+        }
+        
+        input[type="text"] {
+            padding: 10px 12px;
+            background-color: var(--bg-input);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        footer a:hover {
+            color: #1DA1F2;
+            text-decoration: underline;
+        }
+        
+        .footer-logo {
+            margin-top: 15px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-logo:hover {
+            opacity: 1;
+        }
+        
+        .footer-logo img {
+            max-width: 160px;
+            transition: transform 0.3s ease;
+        }
+        
+        .footer-logo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .powered-by {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .creator-link {
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .creator-link:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            padding: 10px;
+        }
+        
+        .logo-container img {
+            transition: transform 0.3s ease;
+            max-width: 200px;
+        }
+        
+        .logo-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+        }
+        
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        /* Audio player styling */
+        audio {
+            width: 100%;
+            margin: 10px 0;
+            border-radius: 50px;
+            height: 40px;
+        }
+        
+        audio::-webkit-media-controls-panel {
+            background-color: #333;
+        }
+        
+        audio::-webkit-media-controls-play-button {
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+        
+        #download-button {
+            background-color: var(--secondary-color);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+        
+        #download-button:hover {
+            background-color: #3367d6;
+            box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+        }
+        
+        /* Interactive loading animation */
+        @keyframes sick-wave {
+            0% { height: 5px; }
+            50% { height: 20px; }
+            100% { height: 5px; }
+        }
+        
+        .sick-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        
+        .sick-bar {
+            width: 4px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            animation: sick-wave 1s infinite;
+        }
+        
+        .sick-bar:nth-child(2) { animation-delay: 0.1s; }
+        .sick-bar:nth-child(3) { animation-delay: 0.2s; }
+        .sick-bar:nth-child(4) { animation-delay: 0.3s; }
+        .sick-bar:nth-child(5) { animation-delay: 0.4s; }
+
+        /* Generate button special styling */
+        .generate-button {
+            font-size: 18px;
+            padding: 16px 32px;
+            margin-top: 25px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #ff7b7b 100%);
+            animation: button-pulse 2s infinite;
+            min-width: 250px;
+        }
+
+        @keyframes button-pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(255, 82, 82, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3); }
+        }
+
+        .generate-button:hover {
+            animation-play-state: paused;
+            background: linear-gradient(135deg, #ff3232 0%, #ff5252 100%);
+            transform: scale(1.05) translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="bg-circle circle-1"></div>
+        <div class="bg-circle circle-2"></div>
+        <div class="bg-circle circle-3"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header-container">
+            <h1>Call in Sick Bot</h1>
+            <div class="tagline">Sick? Hungover? Tired of capitalism?<br>
+Skip the stress and let a cloned version of your voice call in sick for you. With real-time audio that sounds convincingly rough, Call In Sick Bot gets you the day off — no questions, no awkward phone chats, just sweet freedom.</div>
+        </div>
+        
+        {% if not api_key_valid %}
+        <div class="api-notice api-warning">
+            <strong>Note:</strong> Your ElevenLabs API key appears to be invalid or not properly set. Please check your <code>.env</code> file and make sure:
+            <ul style="margin-top: 5px; margin-bottom: 5px;">
+                <li>There are no quotes around the API key</li>
+                <li>There are no spaces around the equals sign</li>
+                <li>The format is: <code>ELEVENLABS_API_KEY=your_actual_api_key_here</code></li>
+                <li>After updating, restart the application</li>
+            </ul>
+            <p>Get an API key from <a href="https://elevenlabs.io" target="_blank" style="color: #ffb700;">ElevenLabs</a> if you don't have one.</p>
+            <button onclick="testApiKey()" style="background-color: #ffc107; color: #000; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px;">Test API Key</button>
+            <div id="api-test-result" style="margin-top: 10px; font-size: 14px; display: none;"></div>
+        </div>
+        {% endif %}
+        
+        {% if not mcp_installed %}
+        <div class="api-notice api-error">
+            <strong>Warning:</strong> ElevenLabs MCP is not installed. Please run: <code>pip install elevenlabs-mcp</code> and restart the application.
+        </div>
+        {% endif %}
+        
+        <!-- Voice ID Settings -->
+        <div class="api-notice api-info">
+            <div class="checkbox-container">
+                <input type="checkbox" id="show-voice-id" onchange="toggleVoiceIdSetup()">
+                <label for="show-voice-id"><strong>Use custom voice ID</strong> (Enable if you have your own ElevenLabs voice)</label>
+            </div>
+            
+            <div id="voice-id-setup" class="voice-id-setup">
+                <input type="text" id="voice-id-input" placeholder="Enter your Sick Man 1 voice ID" style="width: 300px;">
+                <button onclick="setVoiceId()" style="background-color: #0288d1;">Set Voice ID</button>
+                <div id="voice-id-result" style="margin-top: 5px; font-size: 14px; display: none;"></div>
+            </div>
+        </div>
+        
+        <p class="description">This app helps you generate a realistic "calling in sick" audio message. You can either type your excuse or record it with your voice. The app will transform it to sound convincingly ill with coughs, sniffles, and a hoarse tone.</p>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('text-tab')">Type Message</div>
+            <div class="tab" onclick="showTab('voice-tab')">Record Voice</div>
+        </div>
+        
+        <div id="text-tab" class="tab-content active">
+            <textarea id="message" placeholder="Enter your message here...">Hello, eh, I'm affriad I'm not feeling very well today, and er, wont be able to come into work today, ill call you in the morning if I'm still not well.</textarea>
+            <button onclick="generateFromText()" class="generate-button">Generate Sick Call</button>
+        </div>
+        
+        <div id="voice-tab" class="tab-content">
+            <p>Click the button below to start recording your message:</p>
+            <button id="recordButton" class="record-button" onclick="toggleRecording()">
+                <span>Start Recording</span>
+            </button>
+            <div class="record-status" id="recordStatus"></div>
+            <button id="generateFromVoiceButton" onclick="generateFromVoice()" class="generate-button" style="display: none; margin-top: 15px;">Generate Sick Call</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="sick-loading">
+                <div class="sick-bar"></div>
+                <div class="sick-bar"></div>
+                <div class="sick-bar"></div>
+                <div class="sick-bar"></div>
+                <div class="sick-bar"></div>
+            </div>
+            <div style="margin-top: 10px;">Generating your sick call...</div>
+        </div>
+        
+        <div class="result" id="result">
+            <h3>Generated Text:</h3>
+            <p id="generated-text"></p>
+            
+            <h3>Audio Preview:</h3>
+            <audio id="audio-player" controls>
+                Your browser does not support the audio element.
+            </audio>
+            
+            <div style="margin-top: 15px;">
+                <button id="download-button" onclick="downloadAudio()">
+                    Download Audio
+                </button>
+            </div>
+        </div>
+
+        <div class="debug-console" id="debug-console">
+            <div>Debug Console:</div>
+        </div>
+        
+        <footer>
+            Created by <a href="https://twitter.com/AI_TechnoKing" target="_blank" style="color:rgb(117, 0, 163); text-decoration: none;" class="creator-link">AI_TechnoKing on X</a>
+            <div class="footer-logo">
+                <div class="powered-by">Powered by</div>
+                <a href="https://elevenlabs.io" target="_blank">
+                    <img src="/static/ElevenLabs.png" alt="ElevenLabs">
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Add ripple effect to buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.style.position = 'absolute';
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.width = '5px';
+                    ripple.style.height = '5px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.transform = 'translate(-50%, -50%)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 700);
+                });
+            });
+        });
+        
+        function log(message) {
+            const console = document.getElementById('debug-console');
+            const logLine = document.createElement('div');
+            logLine.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            console.appendChild(logLine);
+            console.scrollTop = console.scrollHeight;
+        }
+        
+        function toggleDebugConsole() {
+            const console = document.getElementById('debug-console');
+            console.classList.toggle('active');
+        }
+        
+        function toggleVoiceIdSetup() {
+            const checkbox = document.getElementById('show-voice-id');
+            const setupDiv = document.getElementById('voice-id-setup');
+            setupDiv.style.display = checkbox.checked ? 'block' : 'none';
+        }
+
+        // Tab switching
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activate the clicked tab
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Text-based generation
+        async function generateFromText() {
+            log('Starting text generation...');
+            const message = document.getElementById('message').value;
+            if (!message.trim()) {
+                alert('Please enter a message first.');
+                log('Error: No message entered');
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            log(`Sending request with text: ${message.substring(0, 30)}...`);
+            
+            try {
+                log('Sending request to generate-from-text endpoint...');
+                const response = await fetch('/generate-from-text', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: message })
+                });
+                
+                log('Response received, parsing JSON...');
+                const data = await response.json();
+                
+                if (data.success) {
+                    log('Success! Got data back from the server.');
+                    document.getElementById('generated-text').textContent = data.text;
+                    const audioPlayer = document.getElementById('audio-player');
+                    audioPlayer.src = data.audio_url + '?t=' + new Date().getTime(); // Prevent caching
+                    result.style.display = 'block';
+                    log('Audio loaded successfully');
+                } else {
+                    log(`Error from server: ${data.error}`);
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                log(`Network error: ${error}`);
+                alert('Error generating sick call: ' + error);
+            } finally {
+                loading.style.display = 'none';
+                log('Request completed');
+            }
+        }
+        
+        // Voice recording variables
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        
+        // Voice recording functions
+        function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+        
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    document.getElementById('generateFromVoiceButton').style.display = 'block';
+                    document.getElementById('recordStatus').textContent = 'Recording completed! Click "Generate Sick Call" to proceed.';
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                
+                // Update UI
+                document.getElementById('recordButton').innerHTML = '<span>Stop Recording</span>';
+                document.getElementById('recordStatus').innerHTML = '<div class="recording-indicator"></div> Recording in progress...';
+                
+            } catch (error) {
+                alert('Error accessing microphone: ' + error);
+                console.error('Error accessing microphone:', error);
+            }
+        }
+        
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+                // Update UI
+                document.getElementById('recordButton').innerHTML = '<span>Start Recording</span>';
+            }
+        }
+        
+        async function generateFromVoice() {
+            log('Starting voice generation...');
+            if (audioChunks.length === 0) {
+                alert('Please record a message first.');
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            try {
+                // Create audio blob
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                
+                // Convert to base64 for sending to the server
+                const reader = new FileReader();
+                reader.readAsDataURL(audioBlob);
+                
+                reader.onloadend = async () => {
+                    const base64Audio = reader.result.split(',')[1];
+                    
+                    const response = await fetch('/generate-from-voice', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ audio: base64Audio })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        log('Success! Got data back from the server.');
+                        document.getElementById('generated-text').textContent = data.text;
+                        const audioPlayer = document.getElementById('audio-player');
+                        audioPlayer.src = data.audio_url + '?t=' + new Date().getTime(); // Prevent caching
+                        result.style.display = 'block';
+                        log('Audio loaded successfully');
+                    } else {
+                        log(`Error from server: ${data.error}`);
+                        alert('Error: ' + data.error);
+                    }
+                    
+                    loading.style.display = 'none';
+                };
+            } catch (error) {
+                log(`Network error: ${error}`);
+                alert('Error generating sick call: ' + error);
+                loading.style.display = 'none';
+            }
+        }
+        
+        async function downloadAudio() {
+            const audioSrc = document.getElementById('audio-player').src;
+            if (!audioSrc) {
+                alert('No audio available to download.');
+                return;
+            }
+            
+            try {
+                const response = await fetch(audioSrc);
+                const audioBlob = await response.blob();
+                
+                // Create a download link
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(audioBlob);
+                downloadLink.download = 'sick_call.mp3';
+                
+                // Add download animation
+                const button = document.getElementById('download-button');
+                button.innerHTML = 'Downloading...';
+                button.style.backgroundColor = '#2ecc71';
+                
+                // Append to the body, click, and remove
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                // Reset button after download
+                setTimeout(() => {
+                    button.innerHTML = 'Download Audio';
+                    button.style.backgroundColor = '#4285F4';
+                }, 1000);
+                
+            } catch (error) {
+                alert('Error downloading audio: ' + error);
+            }
+        }
+
+        async function testApiKey() {
+            const resultDiv = document.getElementById('api-test-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Testing API key...';
+            
+            try {
+                log('Testing API key...');
+                const response = await fetch('/test-api-key');
+                const data = await response.json();
+                
+                log(`API key test results: ${JSON.stringify(data)}`);
+                
+                let resultHtml = '<strong>API Key Test Results:</strong><br>';
+                resultHtml += `<ul>`;
+                resultHtml += `<li>API Key Present: ${data.key_present ? '✅ Yes' : '❌ No'}</li>`;
+                resultHtml += `<li>API Key Format Valid: ${data.key_format_valid ? '✅ Yes' : '❌ No'}</li>`;
+                resultHtml += `<li>API Key Default: ${!data.key_is_default ? '✅ Not default' : '❌ Using default'}</li>`;
+                resultHtml += `<li>ENV File Found: ${data.env_file_exists ? '✅ Yes' : '❌ No'}</li>`;
+                
+                if (data.env_file_contents) {
+                    resultHtml += `<li>ENV Contents: <code>${data.env_file_contents}</code></li>`;
+                }
+                
+                resultHtml += `<li>MCP Installed: ${data.mcp_installed ? '✅ Yes' : '❌ No'}</li>`;
+                
+                if (data.mcp_version) {
+                    resultHtml += `<li>MCP Version: ${data.mcp_version}</li>`;
+                }
+                
+                resultHtml += `<li>Key Validation: ${data.key_validation_test ? '✅ Success' : '❌ Failed'}</li>`;
+                resultHtml += `<li>Message: ${data.validation_message}</li>`;
+                resultHtml += `</ul>`;
+                
+                if (data.key_validation_test) {
+                    resultHtml += '<div style="color: green; font-weight: bold;">✅ API key is valid and working!</div>';
+                } else {
+                    resultHtml += '<div style="color: red; font-weight: bold;">❌ API key validation failed. See details above.</div>';
+                    resultHtml += '<div>After fixing the issue, restart the application.</div>';
+                }
+                
+                resultDiv.innerHTML = resultHtml;
+            } catch (error) {
+                log(`Error testing API key: ${error}`);
+                resultDiv.innerHTML = `Error testing API key: ${error}`;
+            }
+        }
+
+        async function setVoiceId() {
+            const voiceIdInput = document.getElementById('voice-id-input');
+            const voiceId = voiceIdInput.value.trim();
+            const resultDiv = document.getElementById('voice-id-result');
+            
+            if (!voiceId) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color: red;">Please enter a voice ID</span>';
+                return;
+            }
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Setting voice ID...';
+            
+            try {
+                const response = await fetch('/set-voice-id', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ voice_id: voiceId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `<span style="color: green;">✅ ${data.message}</span>`;
+                } else {
+                    resultDiv.innerHTML = `<span style="color: red;">❌ ${data.error}</span>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: red;">❌ Error setting voice ID: ${error}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

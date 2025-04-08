@@ -6,13 +6,14 @@ The Call-in-Sick Bot is a voice-activated AI web application that helps a user g
 
 This is achieved by transcribing the user's speech to text and then using ElevenLabs' Model Context Protocol (MCP) (specifically, ElevenLabs' advanced text-to-speech API) to produce a lifelike voice output with the desired sickly effects.
 
+This project is designed for the ElevenLabs Demo Competition, showcasing practical and creative uses of the MCP API. The build is powered entirely by ElevenLabs tech and built in Visual Studio Code using Claude 3.5 via GitHub Copilot Agents.
+
 ### Key Features and Flow
 
 1. The user records a voice message (their spoken excuse) through the app.
-2. The app uses speech-to-text (STT) (powered by Whisper) to transcribe the audio into text.
-3. The transcribed text is augmented with "sick" effects in text form (e.g. adding "cough ... sniff" cues).
-4. ElevenLabs' text-to-speech (TTS) API (MCP) generates an audio clip from the augmented text, using a natural voice that sounds congested or hoarse.
-5. The resulting audio message is played back to the user (which they could use as an excuse recording).
+2. The transcribed text is augmented with "sick" effects in text form (e.g. adding "cough ... sniff" cues).
+3. ElevenLabs' text-to-speech (TTS) API (MCP) generates an audio clip from the augmented text, using a natural voice that sounds congested or hoarse.
+4. The resulting audio message is played back to the user (which they could use as an excuse recording).
 
 This masterplan outlines the project structure, required tools, and step-by-step implementation guidance. It is written for an AI coding agent (Claude 3.5 in GitHub Copilot Agent via VS Code) to follow and build the project from an empty repository. Each part of the implementation is explained with clarity, emphasizing correct usage of ElevenLabs MCP and good development practices.
 
@@ -22,26 +23,25 @@ This masterplan outlines the project structure, required tools, and step-by-step
 
 - **Python 3.x** – Main language for backend logic.
 - **Flask** – Python web framework to create a local web server (serves a webpage and API endpoints).
+- HTML/JS – Frontend UI for interaction
+- ElevenLabs MCP – Model Context Protocol for generating realistic, expressive speech
+- Claude 3.5 Agent – Coding assistant to build the full stack inside VS Code
 
 ### AI/ML Components
-
-#### Whisper (OpenAI)
-Used for Speech-to-Text (STT) transcription of the user's spoken input. We will use the open-source Whisper model (preferably a smaller model for local use) to avoid external API calls for transcription.
 
 #### ElevenLabs API (Model Context Protocol)
 Used for Text-to-Speech (TTS) generation. The ElevenLabs MCP will be accessed via their API/SDK to convert text into a realistic voice audio. We will ensure the workflow aligns with ElevenLabs' recommended usage:
 
 - Using an ElevenLabs API key for authentication.
-- Selecting an appropriate voice (pre-existing voice or a custom clone if available).
+- Selecting an appropriate voice (pre-existing voice or a custom clone if available preferably the users own cloned voice).
 - Using the correct model (e.g. eleven_multilingual_v2 for expressive speech) and settings for natural output.
 - Generating audio and handling the binary audio output (MP3/WAV).
-
-> **Note:** ElevenLabs also supports voice cloning and other audio tools via MCP, but for this project we primarily use text-to-speech.
 
 ### Frontend
 
 - **HTML5 + JavaScript** – for a simple web page that lets the user record their voice and listen to the result.
   - Will utilize browser APIs for audio recording (e.g. MediaRecorder via getUserMedia).
+  - Text input available via a message box if user doesnt want to use microphone to record message.
   - HTML `<audio>` element for playback.
 - **Bootstrap CSS** (optional) – for basic styling (not required, but could use for quick UI styling if needed).
 
@@ -52,12 +52,6 @@ Used for Text-to-Speech (TTS) generation. The ElevenLabs MCP will be accessed vi
   pip install elevenlabs
   ```
   Provides convenient functions like `generate()` for TTS and handles API endpoints internally.
-
-- **Python whisper or openai-whisper** – Whisper ASR library.
-  ```bash
-  pip install openai-whisper
-  ```
-  This may also require installing ffmpeg for audio processing.
 
 - **Python pyaudio** (optional) – Not strictly needed if using browser recording.
   ```bash
@@ -94,20 +88,18 @@ call-in-sick-bot/
 │   └── style.css           # (Optional) CSS for styling the page
 ├── templates/
 │   └── index.html          # HTML template for the main interface
-├── speech_recognition.py   # Module: handles audio transcription with Whisper
 ├── voice_generation.py     # Module: handles text augmentation and TTS generation with ElevenLabs
-└── (maybe tests/ or sample_audio/ for future tests or assets if needed)
+└── Progress.txt            # Record progress of AI Agent as it completes this masterplan
 ```
 
 ### Notes on Structure
 
 - The Flask app (`app.py`) will tie everything together: it will provide routes for the frontend page and an API endpoint to receive audio and return the generated sick-voice audio.
-- The logic is separated into two helper modules:
-  - `speech_recognition.py` – contains functions to load the Whisper model and transcribe audio input.
+- The logic helper module:
   - `voice_generation.py` – contains functions to prepare the text (insert coughs/sniffs) and to call ElevenLabs API to get the speech audio.
 - **Static files:** `index.html` will be served to the user. It will include `script.js` for recording functionality. The recorded audio will likely be sent to the backend as a blob (e.g. via a form upload or AJAX).
 - **Configuration:** `.env` (not committed to repo) will store sensitive keys like `ELEVENLABS_API_KEY`. The `.env.example` will document what variables are needed without the actual values.
-- **Dependencies:** `requirements.txt` will include Flask, elevenlabs, openai-whisper, python-dotenv, etc., to allow easy installation.
+- **Dependencies:** `requirements.txt` will include Flask, elevenlabs, python-dotenv, etc., to allow easy installation.
 
 ### GitHub Best Practices
 
@@ -123,9 +115,9 @@ We will proceed in incremental steps, verifying functionality at each stage:
 
 #### Tasks
 
-1. Initialize a new git repository (if not already done) and create the basic directory structure.
+1. Initialize a new git repository (Already done Call-in-sick-bot repo created) and create the basic directory structure.
 2. Create a `requirements.txt` with initial dependencies:
-   - List at least: Flask, elevenlabs, openai-whisper (or whisper), python-dotenv. (We will update this as needed.)
+   - List at least: Flask, elevenlabs, python-dotenv. (We will update this as needed.)
 3. Create a `.gitignore`:
    - Include typical Python ignores (`__pycache__/`, `*.pyc`, etc.).
    - Include `.env` to prevent committing secrets.
@@ -152,6 +144,7 @@ We will proceed in incremental steps, verifying functionality at each stage:
        app.run(debug=True)
    ```
    This is just to ensure the server can start. Use `debug=True` for easier local development (auto-reload).
+6. Create a Progress.txt file and as this masterplan is followed the AI Agent should be updating its progress and refer back to it after pauses in creating.      
 
 #### Testing Step 1
 
@@ -189,55 +182,7 @@ No direct testing needed for this step aside from ensuring no errors on startup.
 
 **Commit:** “Add environment variable support and load API key from .env.”
 
-### Step 3: Implement Speech-to-Text Module (Whisper)
-
-#### Tasks
-
-Now, implement the module to handle audio transcription using Whisper.
-
-1. Install Whisper. (Ensure `openai-whisper` is in `requirements.txt`. If the package name is different or if it requires PyTorch, ensure those get installed. The `openai-whisper` package will bring in `torch` as a dependency.)
-2. In `speech_recognition.py`, implement the following:
-   - Load the Whisper model (ideally once, to reuse for multiple transcriptions). For local development, we can use a smaller model to balance speed and accuracy. Whisper has models like `tiny`, `base`, `small`, `medium`, `large`. We will use "small" by default for reasonably good accuracy.
-     ```python
-     import whisper
-
-     # Load model globally on module import (so it loads at server startup)
-     model_name = os.getenv("WHISPER_MODEL", "small")
-     STT_MODEL = whisper.load_model(model_name)
-     ```
-     This loads the model (which might take a few seconds). We allow an optional env var `WHISPER_MODEL` to override model size if needed.
-   - Write a function `transcribe_audio(file_path: str) -> str` that takes a path to an audio file and returns the transcribed text:
-     ```python
-     def transcribe_audio(file_path: str) -> str:
-         """
-         Transcribe the audio at file_path to text using Whisper.
-         Returns the recognized text.
-         """
-         # Use the loaded model to transcribe
-         result = STT_MODEL.transcribe(file_path)
-         text = result.get("text", "").strip()
-         return text
-     ```
-     Whisper’s `transcribe` will handle audio loading (requires ffmpeg for formats other than WAV). We strip the text to clean up whitespace.
-
-#### Testing STT
-
-We should test this function with a sample audio file. Since this is a local project, you (the developer) can provide a short WAV or MP3 of someone saying a simple phrase (e.g. "I'm feeling very sick today").
-
-Place a sample audio file in the project (not necessarily committed) or record one through the microphone.
-
-Temporarily, you can create a small script or use the Python shell:
-```python
-from speech_recognition import transcribe_audio
-text = transcribe_audio("path/to/sample_sick_excuse.wav")
-print("Transcribed text:", text)
-```
-
-Run this test to ensure Whisper model is working and the output text is sensible.
-
-**Commit:** “Add Whisper speech_recognition module with transcribe_audio function.”
-
-### Step 4: Text Augmentation for "Sick" Effects
+### Step 3: Text Augmentation for "Sick" Effects
 
 #### Tasks
 
@@ -296,7 +241,7 @@ Ensure the function handles empty string and doesn’t produce weird spacing. We
 
 **Commit:** “Add text augmentation for sick effects (coughs/sniffs) in voice_generation module.”
 
-### Step 5: Text-to-Speech Generation with ElevenLabs (MCP)
+### Step 4: Text-to-Speech Generation with ElevenLabs (MCP)
 
 #### Tasks
 
@@ -325,33 +270,18 @@ Now create a function `generate_sick_voice_audio(text: str, voice: str = DEFAULT
 #### Example Implementation
 
 ```python
-def generate_sick_voice_audio(text: str, voice: str = DEFAULT_VOICE) -> str:
-    """
-    Generate an audio file for the given text with a sick voice effect.
-    Returns the filepath of the saved audio.
-    """
-    if not text or text.isspace():
-        raise ValueError("No text provided for TTS")
+from elevenlabs import generate, save
 
-    # 1. Augment text with sick effects
-    sick_text = augment_text_with_sickness(text)
-    
-    # 2. Use ElevenLabs to generate audio
-    try:
-        audio = elevenlabs.generate(
-            text = sick_text,
-            voice = voice,
-            model = ELEVEN_MODEL   # e.g. "eleven_multilingual_v2"
-            # We could also adjust stability/similarity settings if desired by creating a Voice object
-        )
-    except Exception as e:
-        # If the API call fails, propagate the error or handle it
-        raise
-
-    # 3. Save the audio to a file
-    output_path = "static/output.mp3"
-    elevenlabs.save(audio, output_path)
-    return output_path
+def generate_sick_audio(text: str) -> str:
+    sick_text = augment_with_sickness(text)
+    audio = generate(
+        text=sick_text,
+        voice=VOICE_ID,
+        model=MODEL_ID
+    )
+    path = "static/output.mp3"
+    save(audio, path)
+    return path
 ```
 
 #### Notes on Implementation
@@ -376,7 +306,7 @@ Running this should produce an `output.mp3` file. You can manually listen to it 
 
 **Commit:** “Implement ElevenLabs TTS generation in voice_generation module.”
 
-### Step 6: Integrate into Flask Backend (API Endpoints)
+### Step 5: Integrate into Flask Backend (API Endpoints)
 
 #### Tasks
 
@@ -388,16 +318,28 @@ With core functionality in place (transcription and voice generation), we now co
 
 In `app.py`, import our modules:
 ```python
-from flask import Flask, request, render_template, send_file, jsonify
-from speech_recognition import transcribe_audio
-from voice_generation import generate_sick_voice_audio
+from flask import Flask, request, render_template, send_file
+from voice_generation import generate_sick_audio
 ```
 
 Set up the frontend page route:
 ```python
-@app.route("/", methods=["GET"])
-def index():
+app = Flask(__name__)
+
+@app.route("/")
+def home():
     return render_template("index.html")
+
+@app.route("/generate", methods=["POST"])
+def generate():
+    text = request.form.get("text")
+    if not text:
+        return "No input text", 400
+    audio_path = generate_sick_audio(text)
+    return send_file(audio_path, mimetype="audio/mpeg")
+
+if __name__ == '__main__':
+    app.run(debug=True)
 ```
 
 This will serve `templates/index.html` which we will create next.
@@ -406,28 +348,11 @@ This will serve `templates/index.html` which we will create next.
 
 Create the HTML template `templates/index.html`:
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Call-in-Sick Bot</title>
-  <!-- (Optional Bootstrap CDN for styling) -->
-</head>
-<body>
-  <h1>Call-in-Sick Bot</h1>
-  <p>Click "Record" and speak your sick-day message, then click "Stop". The app will generate a sick-sounding audio message for you.</p>
-  
-  <button id="recordBtn">Record</button>
-  <button id="stopBtn" disabled>Stop</button>
-  <br/>
-  <p id="statusMsg"></p>
-  
-  <!-- Audio player for result -->
-  <audio id="resultAudio" controls style="display:none; margin-top: 20px;"></audio>
-  
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
-</html>
+<form id="sickForm">
+  <input type="text" name="text" placeholder="What's your excuse?" required>
+  <button type="submit">Generate</button>
+</form>
+
 ```
 
 We'll style and improve it later if needed, but this is the basic structure.
@@ -436,76 +361,10 @@ We'll style and improve it later if needed, but this is the basic structure.
 
 Implement `static/script.js` for recording and sending audio:
 ```javascript
-const recordBtn = document.getElementById('recordBtn');
-const stopBtn = document.getElementById('stopBtn');
-const statusMsg = document.getElementById('statusMsg');
-const resultAudio = document.getElementById('resultAudio');
-let mediaRecorder;
-let audioChunks = [];
-
-recordBtn.addEventListener('click', async () => {
-  // Request microphone permission and start recording
-  audioChunks = [];
-  statusMsg.textContent = "Recording... (speak now)";
-  resultAudio.style.display = "none";
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
-    recordBtn.disabled = true;
-    stopBtn.disabled = false;
-
-    mediaRecorder.ondataavailable = e => {
-      if (e.data.size > 0) {
-        audioChunks.push(e.data);
-      }
-    };
-
-    mediaRecorder.onstop = async () => {
-      // When recording stops, combine chunks into a blob
-      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-      statusMsg.textContent = "Processing your audio...";
-      // Send the blob to the server
-      let formData = new FormData();
-      formData.append('audio_file', audioBlob, 'recording.webm');
-      try {
-        const response = await fetch('/process-audio', {
-          method: 'POST',
-          body: formData
-        });
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(errorText || "Server error");
-        }
-        // Expect the server to respond with the audio data (MP3) or a JSON with path
-        const audioBlobResponse = await response.blob();
-        // Create a URL for the blob and set it to the audio element
-        const audioURL = URL.createObjectURL(audioBlobResponse);
-        resultAudio.src = audioURL;
-        resultAudio.style.display = "block";
-        resultAudio.play();
-        statusMsg.textContent = "Here's your sick note message:";
-      } catch (err) {
-        console.error("Error:", err);
-        statusMsg.textContent = "Error: " + err.message;
-      } finally {
-        // Re-enable record button for another try
-        recordBtn.disabled = false;
-        stopBtn.disabled = true;
-      }
-    };
-  } catch (err) {
-    console.error('Recording failed:', err);
-    statusMsg.textContent = "Could not access microphone: " + err;
-  }
-});
-
-stopBtn.addEventListener('click', () => {
-  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-    mediaRecorder.stop();
-    statusMsg.textContent = "Recording stopped. Generating voice..."; 
-    stopBtn.disabled = true;
-  }
+// Sends the typed text directly to Flask
+const res = await fetch("/generate", {
+  method: "POST",
+  body: new FormData(form)
 });
 ```
 
@@ -513,39 +372,14 @@ stopBtn.addEventListener('click', () => {
 
 Back in `app.py`, implement the audio processing route:
 ```python
-import os
-from werkzeug.utils import secure_filename
+@app.route("/generate", methods=["POST"])
+def generate():
+    text = request.form.get("text")
+    if not text:
+        return "No input text", 400
+    audio_path = generate_sick_audio(text)
+    return send_file(audio_path, mimetype="audio/mpeg")
 
-@app.route("/process-audio", methods=["POST"])
-def process_audio():
-    # Ensure an audio file is in the request
-    if 'audio_file' not in request.files:
-        return "No audio file provided", 400
-    file = request.files['audio_file']
-    if file.filename == '':
-        return "Empty file", 400
-
-    # Save the uploaded audio file to a temporary location
-    filename = secure_filename(file.filename)
-    temp_path = os.path.join("static", filename)
-    file.save(temp_path)
-
-    try:
-        # 1. Transcribe the audio to text
-        transcribed_text = transcribe_audio(temp_path)
-        if not transcribed_text:
-            return "No speech detected in audio", 400
-
-        # 2. Generate sick voice audio using ElevenLabs
-        output_path = generate_sick_voice_audio(transcribed_text)
-    except Exception as e:
-        print("Error during processing:", e)
-        return "Error during processing audio", 500
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-
-    return send_file(output_path, mimetype="audio/mpeg")
 ```
 
 #### Testing the Full Pipeline
@@ -554,12 +388,11 @@ Start the Flask server (`python app.py`). Open `http://localhost:5000` in a brow
 
 Try the recording feature:
 - Click "Record", say something like "Hi, I'm not feeling well... I think I have a bad cough and can't come in today.", then click "Stop".
-- The status text should update to "Processing..." while the app uploads and waits for the response.
-- After a few moments, you should see the audio player appear with the generated audio, and it should autoplay.
+
 
 **Commit:** “Integrate STT and TTS into Flask app, add frontend recording interface.”
 
-### Step 7: Refinements, Best Practices, and Project Documentation
+### Step 6: Refinements, Best Practices, and Project Documentation
 
 #### Tasks
 

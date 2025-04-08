@@ -1,0 +1,5 @@
+flask==3.0.2
+elevenlabs-mcp
+elevenlabs>=1.56.0
+python-dotenv==1.0.1
+requests>=2.20.0

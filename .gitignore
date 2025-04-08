@@ -1,0 +1,30 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Generated audio files
+static/*.mp3
+static/*.wav
+
+# IDE
+.vscode/
+*.swp
+
+# Setup Files
+API-Doc-1.txt
+API-Doc-2.txt
+Progress.txthelp.txt
